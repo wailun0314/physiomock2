@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>物理治療助理刷題 · 持續評估模擬卷</title>
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --bg:#eef3f5; --surface:#ffffff; --surface2:#e6eef1; --text:#13222c; --muted:#58707c; --line:#cfdbe1;
+  --brand:#0a6a86; --on-brand:#ffffff; --brand-soft:#d6ebf2;
+  --ok:#1b7f47; --on-ok:#ffffff; --ok-soft:#d8f0e1;
+  --bad:#bf3a2b; --on-bad:#ffffff; --bad-soft:#fbe0dc;
+  --mark:#f2cf3d; --mark-soft:#fff3bf; --mark-ink:#5c4700;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0c181e; --surface:#14252d; --surface2:#1b323c; --text:#e5eef2; --muted:#92aab5; --line:#2a4350;
+    --brand:#4cc3e3; --on-brand:#04222c; --brand-soft:#12394a;
+    --ok:#4fd187; --on-ok:#052b14; --ok-soft:#133823;
+    --bad:#ff8574; --on-bad:#3a0a04; --bad-soft:#40201b;
+    --mark:#f2cf3d; --mark-soft:#3b3410; --mark-ink:#f6e08a;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0c181e; --surface:#14252d; --surface2:#1b323c; --text:#e5eef2; --muted:#92aab5; --line:#2a4350;
+  --brand:#4cc3e3; --on-brand:#04222c; --brand-soft:#12394a;
+  --ok:#4fd187; --on-ok:#052b14; --ok-soft:#133823;
+  --bad:#ff8574; --on-bad:#3a0a04; --bad-soft:#40201b;
+  --mark:#f2cf3d; --mark-soft:#3b3410; --mark-ink:#f6e08a;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:"PingFang HK","PingFang TC","Noto Sans HK","Noto Sans TC","Microsoft JhengHei",system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:16px;line-height:1.6;
+}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--surface);z-index:30}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:3px solid var(--brand);outline-offset:2px}
+h1,h2,h3,p{margin:0}
+.serif{font-family:"Noto Serif HK","Noto Serif TC","Source Han Serif TC","Songti TC","PMingLiU","MingLiU",serif}
+
+#topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:31;background:var(--surface);border-bottom:1px solid var(--line)}
+.tb{max-width:780px;margin:0 auto;display:flex;align-items:center;gap:10px;padding:10px 14px;min-height:56px}
+.tb .grow{flex:1;min-width:0}
+.brand{display:flex;align-items:center;gap:10px}
+.logo{width:34px;height:34px;border-radius:9px;background:var(--brand);color:var(--on-brand);display:grid;place-items:center;font-weight:700;font-size:.82rem;letter-spacing:.02em}
+.brand-t{font-weight:700;line-height:1.2}
+.brand-s{font-size:.78rem;color:var(--muted);line-height:1.2}
+.ibtn{border:1px solid var(--line);background:var(--surface);border-radius:10px;min-height:40px;min-width:40px;padding:0 12px;font-size:.9rem}
+.pbar{height:4px;background:var(--surface2)}
+.pbar i{display:block;height:100%;background:var(--brand);transition:width .25s}
+.tb-title{font-weight:700;line-height:1.25}
+.tb-sub{font-size:.8rem;color:var(--muted);line-height:1.25}
+.timer{font-variant-numeric:tabular-nums;font-weight:600;font-size:.95rem}
+
+.wrap{max-width:780px;margin:0 auto;padding:16px 14px 28px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;margin:0 0 14px}
+.card.tight{padding:12px}
+.h-sec{font-size:1.05rem;font-weight:700;margin:20px 2px 10px}
+.muted{color:var(--muted)}
+.small{font-size:.86rem}
+
+.hero{padding:6px 2px 14px}
+.hero h1{font-size:1.55rem;line-height:1.3;font-weight:800}
+.hero p{color:var(--muted);margin-top:6px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.stat b{display:block;font-size:1.35rem;line-height:1.2;font-variant-numeric:tabular-nums}
+.stat span{font-size:.8rem;color:var(--muted)}
+
+.seg-row{display:flex;align-items:center;gap:10px;margin:0 0 10px;flex-wrap:wrap}
+.seg-row .lab{width:64px;font-size:.9rem;color:var(--muted)}
+.seg{display:inline-flex;border:1.5px solid var(--line);border-radius:10px;overflow:hidden}
+.seg button{border:0;background:transparent;padding:8px 14px;min-height:40px;font-size:.92rem}
+.seg button+button{border-left:1.5px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--brand);color:var(--on-brand);font-weight:600}
+.hint{font-size:.84rem;color:var(--muted);margin-top:4px}
+
+.set{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:0 0 10px}
+.set:hover{border-color:var(--brand)}
+.set .n{flex:0 0 auto;min-width:54px;text-align:center;font-size:1.35rem;font-weight:800;color:var(--brand);font-variant-numeric:tabular-nums;line-height:1.1}
+.set .n small{display:block;font-size:.72rem;font-weight:500;color:var(--muted)}
+.set .m{flex:1;min-width:0}
+.set .m b{display:block}
+.set .m span{font-size:.86rem;color:var(--muted)}
+.set[disabled]{opacity:.5;cursor:not-allowed}
+.set.feature{border:2px solid var(--brand)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1.5px solid var(--line);background:var(--surface);border-radius:999px;padding:8px 14px;min-height:40px;font-size:.92rem}
+.chip:hover{border-color:var(--brand)}
+.chip[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:var(--on-brand)}
+.chip em{font-style:normal;color:var(--muted);font-size:.82rem;margin-left:4px}
+.chip[aria-pressed="true"] em{color:inherit;opacity:.85}
+
+.hist{width:100%;border-collapse:collapse;font-size:.92rem}
+.hist td{padding:8px 4px;border-bottom:1px solid var(--line)}
+.hist tr:last-child td{border-bottom:0}
+.hist .sc{text-align:right;font-variant-numeric:tabular-nums;font-weight:700}
+.linkbtn{background:none;border:0;color:var(--muted);text-decoration:underline;font-size:.86rem;padding:8px 2px}
+
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px}
+.tag{font-size:.78rem;padding:2px 10px;border-radius:999px;background:var(--surface2);color:var(--muted)}
+.tag.alt{background:var(--brand-soft);color:var(--brand)}
+.tag.warn{background:var(--mark-soft);color:var(--mark-ink)}
+.qno{display:flex;gap:12px;align-items:flex-start}
+.qno .num{flex:0 0 auto;font-weight:800;font-size:1.15rem;color:var(--brand);font-variant-numeric:tabular-nums;line-height:1.7;min-width:2.1em}
+.qtext{font-size:1.14rem;line-height:1.7;font-weight:600;margin:0 0 16px}
+
+.opt{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;padding:13px 14px;border:1.5px solid var(--line);background:var(--surface);border-radius:12px;margin:0 0 10px;line-height:1.55}
+.opt .k{flex:0 0 28px;height:28px;border-radius:50%;border:2px solid var(--muted);display:grid;place-items:center;font-weight:700;font-size:.82rem;color:var(--muted);background:transparent}
+.opt:hover .k{border-color:var(--brand);color:var(--brand)}
+.opt.sel{border-color:var(--brand);background:var(--brand-soft)}
+.opt.sel .k{background:var(--brand);border-color:var(--brand);color:var(--on-brand)}
+.opt.correct{border-color:var(--ok);background:var(--ok-soft)}
+.opt.correct .k{background:var(--ok);border-color:var(--ok);color:var(--on-ok)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.opt.wrong .k{background:var(--bad);border-color:var(--bad);color:var(--on-bad)}
+.opt.dim{opacity:.62}
+.opt[aria-disabled="true"]{cursor:default}
+.exp{border-radius:12px;padding:12px 14px;margin-top:4px;border-left:5px solid var(--muted);background:var(--surface2)}
+.exp.ok{border-left-color:var(--ok);background:var(--ok-soft)}
+.exp.bad{border-left-color:var(--bad);background:var(--bad-soft)}
+.exp b{display:block;margin-bottom:2px}
+.exp p{font-size:.95rem}
+
+.wrap.inquiz{padding-bottom:0}
+.actions{position:sticky;bottom:0;z-index:25;margin:0 -14px;background:var(--surface);border-top:1px solid var(--line);padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px))}
+.actions .in{display:flex;gap:8px}
+.btn{border:1.5px solid var(--line);background:var(--surface);border-radius:12px;min-height:46px;padding:0 14px;font-weight:600}
+.btn.pri{background:var(--brand);border-color:var(--brand);color:var(--on-brand)}
+.btn.flex{flex:1}
+.btn.wide{flex:1.6}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.btn.mark[aria-pressed="true"]{background:var(--mark-soft);border-color:var(--mark);color:var(--mark-ink)}
+.btn.block{width:100%;margin:0 0 10px}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(44px,1fr));gap:8px}
+.cell{position:relative;min-height:44px;border:1.5px solid var(--line);background:var(--surface);border-radius:50%;font-weight:700;font-variant-numeric:tabular-nums;aspect-ratio:1}
+.cell.ans{background:var(--brand);border-color:var(--brand);color:var(--on-brand)}
+.cell.ok{background:var(--ok);border-color:var(--ok);color:var(--on-ok)}
+.cell.bad{background:var(--bad);border-color:var(--bad);color:var(--on-bad)}
+.cell.cur{outline:3px solid var(--text);outline-offset:2px}
+.cell.flag::after{content:"";position:absolute;top:-3px;right:-3px;width:12px;height:12px;border-radius:50%;background:var(--mark);border:2px solid var(--surface)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.8rem;color:var(--muted);margin-top:10px}
+
+.score{text-align:center;padding:8px 0 4px}
+.score .big{font-size:3.4rem;font-weight:800;line-height:1.1;font-variant-numeric:tabular-nums}
+.score .big small{font-size:1.2rem;color:var(--muted);font-weight:600}
+.verdict{display:inline-block;margin-top:8px;padding:4px 16px;border-radius:999px;font-weight:700}
+.verdict.pass{background:var(--ok-soft);color:var(--ok)}
+.verdict.fail{background:var(--bad-soft);color:var(--bad)}
+.bars{display:grid;gap:12px;margin-top:6px}
+.bar-h{display:flex;justify-content:space-between;font-size:.92rem;margin-bottom:4px}
+.bar-t{height:10px;border-radius:6px;background:var(--surface2);overflow:hidden}
+.bar-t i{display:block;height:100%;background:var(--brand)}
+.bar-t i.low{background:var(--bad)}
+.bar-t i.hi{background:var(--ok)}
+.rv-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:.9rem}
+.st{font-weight:700}
+.st.ok{color:var(--ok)}
+.st.bad{color:var(--bad)}
+.st.na{color:var(--muted)}
+.empty{text-align:center;color:var(--muted);padding:28px 8px}
+.foot{font-size:.8rem;color:var(--muted);text-align:center;margin-top:18px}
+
+#modal .ov{position:fixed;inset:0;z-index:50;background:rgba(5,15,20,.55);display:grid;place-items:center;padding:20px}
+#modal .box{background:var(--surface);border:1px solid var(--line);border-radius:16px;max-width:420px;width:100%;padding:20px}
+#modal h3{font-size:1.1rem;margin-bottom:8px}
+#modal .row{display:flex;gap:10px;margin-top:16px}
+@media (prefers-reduced-motion: reduce){.pbar i{transition:none}}
+@media (max-width:380px){.stats{grid-template-columns:1fr 1fr 1fr}.seg button{padding:8px 10px}}
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main id="app" class="wrap"></main>
+<div id="modal"></div>
+<script>
+var UNITS={u1:'單元一 行業與守則',u2:'單元二 解剖生理',u3:'單元三 基本疾病',u4:'單元四 儀器與器具',u5:'單元五 運動與生命表徵'};
+var TYPE={m:'記憶',s:'情境'};
+function Q(id,unit,type,q,c,w,pos,exp){var opts=w.slice();opts.splice(pos,0,c);return{id:id,unit:unit,type:type,q:q,opts:opts,a:pos,exp:exp};}
+var BANK=[
+/* ===== 原卷 Q1–Q25 ===== */
+Q(1,'u2','m','人體構造由小至大的正確排序是：','細胞 → 組織 → 器官 → 系統',['細胞 → 器官 → 組織 → 系統','組織 → 細胞 → 器官 → 系統','細胞 → 組織 → 系統 → 器官'],1,
+ '單元二 2.3.2：細胞 → 組織 → 器官 → 系統。組織由形狀及種類相同的細胞組成；器官由不同組織聚合；系統由不同器官組合。（工作紙一第 1 題）'),
+Q(2,'u2','m','成年人的椎骨（脊柱）共有多少節？','26',['24','29','33'],3,
+ '成人椎骨 26 節＝頸 7＋胸 12＋腰 5＋骶 1（5 合 1）＋尾 1（4 合 1）。33 塊是兒童、青少年骶骨與尾骨尚未融合時的總數；29 是顱骨（含聽小骨及舌骨）的塊數。'),
+Q(3,'u2','m','下列哪一個關節屬「球窩關節」，是活動性最大的關節？','髖關節',['膝關節','肘關節','大拇指關節'],0,
+ '球窩關節活動性最大，例：髖關節、肩關節。膝、肘＝鉸鏈關節；大拇指＝鞍狀關節。（工作紙一第 8 題）'),
+Q(4,'u5','m','成年人的正常脈搏率及呼吸率，分別約為每分鐘：','60–100 次；16–20 次',['50–90 次；12–16 次','60–100 次；30–40 次','80–120 次；16–20 次'],2,
+ '成人脈搏 60–100 次/分；成人呼吸 16–20 次/分（嬰兒 30–40、小孩 20–25）。'),
+Q(5,'u5','m','以下哪個血壓讀數（收縮壓／舒張壓，mmHg）屬於「第一階段高血壓」？','148/94',['118/78','128/84','168/104'],0,
+ '第一階段高血壓：收縮壓 140–159／舒張壓 90–99。118/78 屬理想血壓；128/84 屬高血壓前期（120–139／80–89）；168/104 屬第二階段（>160／>100）。'),
+Q(6,'u5','m','按課程筆記採用的亞洲標準，BMI 為 25.0–29.9 屬於：','肥胖',['過重','正常','非常肥胖'],3,
+ '亞洲標準：<18.5 過輕；18.5–22.9 正常；23.0–24.9 過重；25.0–29.9 肥胖；≥30 非常肥胖。'),
+Q(7,'u3','m','關於中風及小中風（TIA），下列何者正確？','缺血性中風較常見，多因腦血管硬化導致狹窄或栓塞',['小中風是不必理會的輕微不適','出血性中風較常見，佔七成以上','小中風的症狀通常要 48 小時後才會緩解'],2,
+ '缺血性中風佔 70% 以上；出血性中風多與長期高血壓有關。小中風（TIA）通常 24 小時內完全緩解，但往往是中風前的跡象，不容忽視。'),
+Q(8,'u3','m','關於類風濕性關節炎，下列何者正確？','屬免疫系統異常，受影響的關節多為對稱性，並常有晨僵',['主要影響負重的下肢關節，且不損害內臟器官','因尿酸結晶沉積於關節軟組織所致','純因關節軟骨長期磨損而退化'],1,
+ 'RA＝免疫系統異常、系統性疾病、關節對稱性受影響、晨僵。A 描述的是骨關節炎；C 是痛風；D 是骨關節炎的成因。'),
+Q(9,'u3','m','柏金遜症主要是因腦部「黑質」退化，導致哪種神經傳導物質不足？','多巴胺',['血清素','乙醯膽鹼','腎上腺素'],3,
+ '柏金遜症因腦幹「黑質」退化，未能產生足夠的神經傳導物質「多巴胺」，令腦部指揮肌肉活動的功能受損。（工作紙二第 8 題）'),
+Q(10,'u4','m','下列哪一項「不是」超聲波治療的禁忌症？','肌腱、韌帶等軟組織損傷的部位',['腫瘤的部位','孕婦盤腔部位','植有心臟起搏器的範圍'],0,
+ '超聲波主要用於治療軟組織損傷（肌肉、韌帶、肌腱、關節膜），屬適應症。禁忌：起搏器／腦部深層刺激器範圍、皮膚病部位、孕婦盤腔、腫瘤部位、不能配合指示的病人。'),
+Q(11,'u4','m','進行短波治療時，下列何者最為重要？','病人體內外及治療範圍內不可有金屬物品（包括電話）',['在治療部位塗上導電啫喱','先以冰袋預冷皮膚','可使用附金屬部件的座椅以增加穩定'],2,
+ '短波屬高頻電磁波，任何金屬（帶上或在體內）都容易燒傷患者；電子產品亦會受損；不可使用有金屬部件的座椅。'),
+Q(12,'u4','m','蠟療的正確操作參數是：','52–55℃；浸 5–8 層；敷 15–20 分鐘',['40–45℃；浸 5–8 層；敷 15–20 分鐘','52–55℃；浸 1–2 層；敷 5 分鐘','60–65℃；浸 5–8 層；敷 30–40 分鐘'],1,
+ '蠟療：使用前 1 小時開機待蠟溶化；測試溫度 52–55℃；接受治療部位浸 5–8 層，每層待前一層變白稍乾才加；套上膠袋及棉套保溫，敷 15–20 分鐘。'),
+Q(13,'u4','m','運動橡筋帶（Theraband）按筆記，顏色代表的阻力由大至小為：','黑 ＞ 藍 ＞ 綠 ＞ 紅 ＞ 黃',['黃 ＞ 紅 ＞ 綠 ＞ 藍 ＞ 黑','紅 ＞ 黃 ＞ 黑 ＞ 藍 ＞ 綠','綠 ＞ 藍 ＞ 黑 ＞ 黃 ＞ 紅'],2,
+ 'Theraband 阻力：黑＞藍＞綠＞紅＞黃（不同牌子顏色分類可能不同）。別與泥膠混淆：泥膠阻力黃＜橙＜綠＜藍＜紫（紫最強）。'),
+Q(14,'u1','m','構成「疏忽」的三個基本因素是：','照顧責任、失責、造成損失',['故意傷害、失責、賠償','照顧責任、保密、造成損失','失責、取得同意、造成損失'],3,
+ '疏忽三要素：①照顧責任（負有法律承認的謹慎責任）；②失責（謹慎程度低於一般被接受的標準）；③造成損失（失責與損害有因果關係，且非原告人自己疏忽所致）。'),
+Q(15,'u5','m','關於體溫量度，下列何者正確？','肛探原則上最準確，但較遲反映中心體溫的轉變',['額探最能準確反映中心體溫','口探不會受飲食、咳嗽或張口呼吸影響','耳探時毋須對準耳膜'],0,
+ '肛探原則上最準確但反映較遲；額探只反映皮膚溫度，不準；口探會受飲食、咳嗽、張口呼吸影響；耳探量度耳膜溫度，必須對準耳膜並將耳廓稍向後上方拉。'),
+Q(16,'u4','s','治療前核對資料時，助理發現病人植有心臟起搏器，而治療師處方了 TENS。助理最適當的做法是：','暫不開始治療，並立即向治療師報告',['降低輸出電量後照常進行','把電極貼放遠離胸口才開始','請病人簽署同意書後進行'],2,
+ '植有心臟起搏器／腦部深層刺激器是電療禁忌。助理不可自行變通處方，應暫停並向治療師報告。（工作紙三 ★：向病人確認沒有電療禁忌症）'),
+Q(17,'u4','s','助理為病人進行熱敷，完成後發現病人皮膚被燙傷。最適當的做法是：','立即用冷水降溫，並通知治療師',['以冰塊直接敷在傷處，待其自癒','塗上藥膏後繼續熱敷','以乾毛巾蓋好，讓病人休息'],1,
+ '熱療後如患者不幸燙傷，應立即用冷水降溫並通知治療師。熱療期間亦應約每 5 分鐘觀察皮膚狀況。'),
+Q(18,'u4','s','一位病人兩小時前剛扭傷腳踝，局部明顯紅腫熱痛。下列哪項物理因子最適合（在治療師指示下）使用？','以濕毛巾包裹的冰袋',['蠟療','短波','熱水袋'],3,
+ '剛受傷、紅腫熱痛屬急性炎症：冷療可減輕疼痛及腫脹、消減急性炎症；而熱療的禁忌包括「急性發炎」。'),
+Q(19,'u4','s','助理清潔儀器時不慎令超聲波輸出頭碰撞跌地，外觀看似完好。助理應：','通知治療師，由其檢查後才再使用',['繼續使用，只要輸出頭看似完好','加多導電啫喱以補償','調高輸出強度以補償'],0,
+ '超聲波輸出頭容易因碰撞而損壞，影響輸出，甚至報廢；如不慎跌撞，必須通知治療師作檢查。'),
+Q(20,'u5','s','長者運動前量度血氧，讀數為 88%，口唇略帶發紫。最適當的處理是：','低於 90% 屬低血氧，應停止運動並立即向上級報告',['屬正常範圍，可照常運動','只需請長者多飲水','等十分鐘後再量度，期間繼續運動'],2,
+ '血氧正常 97–99%；低於 90% 屬低血氧症，患者可能口唇／皮膚發紫。量度到異常數值應即向上級報告，不宜繼續運動。'),
+Q(21,'u5','s','一位 60 歲長者進行帶氧運動，按筆記公式，其最高心率及 60–85% 目標心率約為：','最高心率 160；目標約 96–136 次/分',['最高心率 160；目標 60–85 次/分','最高心率 140；目標約 84–119 次/分','最高心率 220；目標約 132–187 次/分'],1,
+ '最高心率＝220－年齡＝220－60＝160；60% ＝96；85% ＝136。'),
+Q(22,'u5','s','助理協助一位右側偏癱病人由床轉移至輪椅，輪椅應停泊在病人的哪一側？','左側（健側），並鎖上輪轆',['右側（患側）','床尾','任何一側，只要鎖上輪轆即可'],3,
+ '右側偏癱 → 患側是右、健側是左。輪椅應停泊在病人健側，並鎖上輪轆、清除障礙物；病人以健側手扶床及按住扶手。（工作紙六）'),
+Q(23,'u5','s','一位糖尿病患者問如何安排運動才能有效控制血糖。最適當的建議是：','最少隔天運動一次，理想為每週五次',['每週一次已足夠','只需在血糖偏高時才運動','每月三次，每次運動時間愈長愈好'],0,
+ '運動後胰島素敏感度的提升會於 48–72 小時逐漸減弱，所以想控制血糖應最少隔天運動；最理想是每週五次。'),
+Q(24,'u5','s','在長者運動班中，助理見一位長者做練力運動時用力閉氣。最適當的做法是：','提醒他保持正常呼吸，因閉氣會令血壓急升',['鼓勵閉氣，以發揮更大力量','立即增加阻力','毋須理會'],2,
+ '運動須知：保持正常呼吸，進行練力運動時切忌用力時閉氣，否則會令血壓急升。'),
+Q(25,'u3','s','52 歲肥胖男士，晚上進食大量海鮮及啤酒，翌晨右大拇趾關節突然紅腫劇痛，皮膚溫熱。最可能的病症是：','痛風',['骨關節炎','類風濕性關節炎','腕管綜合症'],1,
+ '高嘌呤飲食（酒、海產、貝殼類、動物內臟）＋中年肥胖男性＋大拇趾關節突然紅腫劇痛、皮膚溫熱，是痛風的典型表現。'),
+/* ===== 加強題 Q26–Q61 ===== */
+Q(26,'u1','m','下列哪項是物理治療助理在工作守則上「不應」做的事？','在沒有治療師同意下，為病人執行治療',['與治療師保持良好溝通','尊重病人私隱','發現問題時立即暫停並向上司報告'],2,
+ '助理不應替病人安排或建議任何運動及治療，亦不得在沒有治療師同意下執行治療；須尊重治療師安排並保持良好溝通。'),
+Q(27,'u1','m','根據性別歧視條例，「性騷擾」的重點是：','提出不受歡迎的性要求或作出涉及性的行徑／陳述，而合理人會感到受冒犯、侮辱或威嚇',['只包括身體接觸','只限上司對下屬','對方拒絕三次後才成立'],0,
+ '定義：提出不受歡迎的性要求或作出涉及性的行徑或陳述；範圍包括身體接觸、言語、動作，以及展示或傳閱色情刊物／物件。'),
+Q(28,'u1','m','「性罪行定罪紀錄查核」機制，下列何者正確？','由合資格申請人自願向警務處提出，並須出示僱主證明文件',['由僱主強制代員工向警方申請','涵蓋私人補習導師及志願工作者','只適用於醫院工作人員'],3,
+ '查核申請須由合資格申請人自願向警務處性罪行定罪紀錄查核辦事處提出，並出示僱主發出的證明文件；機制並不涵蓋私人補習導師及志願工作者。'),
+Q(29,'u1','s','病人問助理：「我的復康進度理想嗎？是否康復得比較慢？」助理最適當的回應是：','講解及分析復康進度是治療師的責任，請病人向治療師查詢，並與治療師保持一致態度',['憑經驗詳細分析並給予預測','自行解釋治療師的檢察結果','建議病人自行加強運動量'],1,
+ '講解分析復康進度是治療師的責任；助理應與治療師充分溝通及合作，以達致一致態度，避免對病人造成不必要的誤會；亦不應詮釋治療師的檢察結果或建議運動。'),
+Q(30,'u1','m','公營醫院「二級病人服務助理（物理治療部）」的入職要求為：','中五程度，能操流利粵語、閱讀及書寫中英文，懂電腦操作',['小六程度即可','須為註冊物理治療師','中三程度，毋須工作經驗'],0,
+ 'PCA II：中五程度、流利粵語、中英文讀寫、電腦操作、能應付體力勞動、具物理治療或護理工作經驗；持物理治療助理證書可獲優先考慮。三級（PCA III）則為小六程度。'),
+Q(31,'u2','m','將人體切為「左、右」兩部分的切面稱為：','矢狀面',['冠狀面','水平面','斜切面'],3,
+ '矢狀面（Sagittal）＝左右；冠狀面（Coronal）＝前後；水平面（Transverse）＝上下。'),
+Q(32,'u2','m','含氧血液由肺回到心臟，所經的血管及進入的腔室是：','肺靜脈 → 左心房',['肺動脈 → 左心房','肺靜脈 → 右心房','主動脈 → 左心室'],2,
+ '小循環：右心室 → 肺動脈 → 肺 → 肺靜脈 → 左心房。左心房對應肺靜脈；右心房接收上、下腔靜脈；左心室對應主動脈。'),
+Q(33,'u2','m','關於肺部構造，下列何者正確？','左肺 2 葉，右肺 3 葉',['左肺 3 葉，右肺 2 葉','兩側肺各 3 葉','兩側肺各 2 葉'],1,
+ '左肺有 2 片肺葉，右肺有 3 片肺葉（記憶法：左 2 右 3）。'),
+Q(34,'u2','m','關節的「輔助結構」包括：','關節軟骨、韌帶、關節盤',['關節面、關節囊、關節腔','關節面、韌帶、關節盤','關節囊、關節軟骨、肌腱'],3,
+ '主要結構＝關節面、關節囊、關節腔；輔助結構（增加關節穩固性或靈活性）＝關節軟骨、韌帶、關節盤。（工作紙一第 9、10 題）'),
+Q(35,'u2','m','關於三種肌肉的敍述，下列何者正確？','平滑肌位於內臟，不能隨意運動，不易疲勞',['心肌能隨意運動','骨骼肌不易疲勞','平滑肌在顯微鏡下有橫紋'],0,
+ '骨骼肌：附著骨骼、隨意、有橫紋、易疲勞；平滑肌：位於內臟、不隨意、無橫紋、不易疲勞；心肌：構成心臟壁、不隨意、有橫紋、不易疲勞。'),
+Q(36,'u2','m','肌肉收縮時「長度增加」（在產生張力時被拉長）的收縮型態是：','離心收縮',['等長收縮','向心收縮','等速收縮'],1,
+ '向心：長度縮短；離心：長度增加；等長：長度不變、關節不動；等速：肢體運動速度恆定。向心與離心同屬等張收縮。'),
+Q(37,'u2','m','關於椎間盤，下列何者正確？','腰部椎間盤最厚；纖維環後份最薄，髓核多向後或後外側突出',['纖維環後份最厚，髓核多向前突出','頸部椎間盤最厚','中胸部椎間盤最厚'],2,
+ '椎間盤厚度：腰部最厚，頸部次之，中胸部最薄；因纖維環後份最薄，髓核多向後／後外側脫出，壓迫脊髓或脊神經；腰椎間盤脫出較常見。'),
+Q(38,'u2','m','下列哪一塊骨屬於「種籽骨」？','髕骨',['肱骨','腕骨','肩胛骨'],1,
+ '種籽骨形如豆狀，分佈於手和足的肌腱內，例子是髕骨。肱骨＝長骨；腕骨＝短骨；肩胛骨＝扁平骨。'),
+Q(39,'u3','m','「開放性（有創）骨折」是指：','傷口由皮膚表面深達骨折處，或斷骨尖端穿出皮膚',['骨折處皮膚完整，沒有與體外接觸','只發生於兒童的骨折','因累積性壓力引致的骨折'],3,
+ '開放性骨折會接觸到皮膚上或環境中的細菌，感染風險高；閉合性（無創）骨折皮膚完整、感染度低。青枝骨折則常見於兒童。'),
+Q(40,'u3','m','下列哪一項是骨質疏鬆症的高危因素？','停經後及 45 歲或以上女性',['年輕男性','經常接觸陽光','體重過重'],0,
+ '高危因素：更年期後及 45 歲或以上女性、缺乏運動、缺鈣及維他命 D、少接觸陽光、吸煙飲酒、長期服用類固醇、家族史、過瘦、高齡、過多咖啡因。注意是「過瘦」而非過重。'),
+Q(41,'u3','m','骨質疏鬆症患者較易出現壓迫性骨折的部位是：','脊椎、橈骨（手腕）、髖關節',['肋骨、鎖骨、頭顱','指骨、趾骨、髕骨','肩胛骨、尺骨、腕骨'],2,
+ '骨質流失通常沒有徵狀；流失至一定程度可引發壓迫性骨折（Compression Fracture），當中以脊椎、橈骨（手腕）和髖關節較易出現。'),
+Q(42,'u3','s','一位病人疼痛位於單邊臀部、大腿後側、小腿至腳踝，並有下肢麻痺。最可能的病因是：','坐骨神經痛（多因椎間盤突出或坐骨神經受壓）',['三叉神經痛','腕管綜合症','網球肘'],3,
+ '坐骨神經痛：疼痛位置為單邊臀部、大腿後側、小腿、腳跟、腳踝，可伴下肢麻痺、知覺遲鈍、行走困難。三叉神經痛則發生在面部。'),
+Q(43,'u3','m','網球肘（肱骨外上髁炎）的典型徵狀是：','肘關節外側痛，緊握或提重物時酸痛無力，外髁有壓痛點',['手肘內側痛，按壓前臂肌肉特別痛','拇指、食指、中指麻痺','肩關節活動受阻，穿衣梳頭困難'],0,
+ '網球肘＝外上髁（伸腕肌腱）；內側（內上髁）則是高爾夫球肘。拇指／食指／中指麻痺是腕管綜合症；肩活動受阻是肩周炎。'),
+Q(44,'u3','s','文員長時間打字後，出現拇指、食指、中指麻痺，敲打腕部時有觸電感。最可能是：','腕管綜合症',['高爾夫球肘','肩周炎','痛風'],1,
+ '腕管綜合症：正中神經受壓；拇指、食指、中指感覺障礙；敲打腕部正中神經時有觸電感；晚期大魚際肌萎縮。預防：每 15–20 分鐘休息並伸展手腕。'),
+Q(45,'u3','s','長者行路時身軀前傾、以急促碎步向前衝，起步及轉彎特別困難，並有手腳震顫。最可能是：','柏金遜症',['阿茲海默氏症','血管性認知障礙症','骨關節炎'],2,
+ '柏金遜症徵狀：肌肉僵硬、手腳震顫、面部表情呆滯、失去平衡、身軀前傾、急促碎步前衝、起步及轉彎困難。大部分患者思維清晰；與認知障礙症是兩種不同疾病。'),
+Q(46,'u3','m','關於阿茲海默氏症與血管性認知障礙症，下列何者正確？','阿茲海默氏症最常見（約 50–70%），衰退漸進；血管性約佔三分之一，衰退多呈梯級式',['阿茲海默氏症的衰退呈梯級式','血管性認知障礙症佔 50–70%，最常見','兩者目前都有根治方法'],3,
+ '血管性（多發梗塞性）因多次輕微中風，每中風一次腦功能便再退化一級；兩者暫未有根治方法，藥物只可改善早期記憶及減輕病徵。'),
+Q(47,'u4','m','NMES（神經肌肉電刺激）的操作要點是：','電極貼在肌肉的 motor point 上，必須看見肌肉收縮',['電極貼可隨意放在任何位置','治療時毋須配合主動運動','只用於止痛，毋須肌肉收縮'],2,
+ 'NMES 經完整周邊神經傳導電流引起肌肉收縮；必須配合主動運動訓練；電極位置有特別要求（motor point），詳細向治療師查詢；必須看見肌肉收縮，甚或全幅度活動。'),
+Q(48,'u4','m','干擾波（IFT）兩組電極的擺放方式是：','對角交叉',['互相平行','重疊放在同一位置','圍繞關節一圈'],0,
+ 'IFT 由兩個中頻交變電流聚合而成，兩組電極需以對角交叉方式擺放；圓形海綿濕水扭乾後放入吸盤，待吸盤吸緊在皮膚上。'),
+Q(49,'u4','m','冷敷治療的正確做法是：','以濕毛巾包裹冷敷，固定約 15–20 分鐘並記錄時間',['冰袋直接貼在皮膚上','固定約 60 分鐘以加強效果','以乾毛巾包裹，每 5 分鐘更換位置'],1,
+ '冷敷：預備合適冷敷用具 → 以濕毛巾包裹 → 放於患處固定約 15–20 分鐘並記錄時間 → 提醒勿睡著、定時觀察皮膚及詢問不適 → 完成後檢視部位並通知治療師。'),
+Q(50,'u4','m','下列哪種熱敷用具「熱力較低、適合冷熱感較弱的長者、可調較溫度及時間」？','電熱氈',['熱水袋','微波爐加熱式熱敷','Hydrocollator'],3,
+ '電熱氈熱力較低、可調溫度及時間；缺點：收藏不便（須平放不摺疊），羊毛氈套不可水洗。熱水袋有灌熱水燙傷危險；Hydrocollator 熱力平均持久，但需預先加熱、耗電大。'),
+Q(51,'u4','m','下列哪一項「不是」衝擊波治療的禁忌症？','足底筋膜炎',['孕婦','服用影響血凝固的藥物','金屬植入物／傷口位置'],0,
+ '足底筋膜炎、鈣化性肌腱炎、網球肘等屬衝擊波的適應症。禁忌：孕婦、起搏器、影響血凝固藥物、胸部／肺部附近、痛症部位附近有腫瘤、金屬植入物／傷口位置。'),
+Q(52,'u4','m','牽引治療的操作注意事項，下列何者正確？','只有治療期間才可鬆開床上的滑動裝置；必須給予病人急停掣及求助鐘',['滑動裝置全程鬆開','牽引帶只需輕輕放在身上','病人獨自接受牽引時毋須求助鐘'],3,
+ '牽引：只有在治療期間才可鬆開治療床上的滑動裝置；必須給予病人急停掣及求助鐘；牽引帶必須舒適而穩固地繫於病人身上。'),
+Q(53,'u4','m','使用激光治療時，下列做法正確的是：','戴護目眼罩，切勿直照眼睛或對著反射面，並在門外貼警告告示',['病人毋須戴眼罩','可對著鏡子以加強效果','在開放式大廳進行以方便觀察'],2,
+ '激光：戴上護目眼罩；切勿直接照射眼睛；切勿直接對著鏡子或反射面；須於分隔區域內進行，並於門外貼出警告告示。'),
+Q(54,'u4','m','平衡板（Balance／Wobble Board）訓練，筆記強調：','留意跌倒風險，通常為一對一訓練，進行形式請諮詢物理治療師',['適合多人同時自行練習','主要用於上肢拉伸','只適用於兒童'],1,
+ '平衡板用作平衡力訓練；留意跌倒風險，通常為一對一訓練；進行形式請諮詢物理治療師。'),
+Q(55,'u5','m','使用血壓計時，袖帶在未充氣前的鬆緊程度應：','只緊貼上臂（Tight-Fit）',['愈緊愈好','鬆鬆地圍著手臂，預留一個拳頭的空隙','可隔著厚衣物綁上'],0,
+ '袖帶要直接置於上臂，中間沒有任何阻隔；未充氣前應只緊貼上臂；寬度覆蓋手臂長度的 2/3，長度足夠完全圍繞手臂；喉管靠近肱動脈。'),
+Q(56,'u5','m','量度血壓時，兩次讀數相差超過多少 mmHg 便要再量度？','5',['1','10','20'],3,
+ '如果兩者相差超過 5 毫米水銀柱，就要再量度；每次量度後須記錄日期、時間和血壓度數，以供醫護人員參考。'),
+Q(57,'u5','m','下列哪種情況「不適宜」進行運動？','胸口絞痛',['輕微出汗','運動前已作熱身','血壓穩定'],1,
+ '不適宜運動：發燒、胸口絞痛、身體劇痛、暈眩、噁心、嘔吐、血壓不穩定、糖尿病控制不佳等。'),
+Q(58,'u5','m','一般運動小組（約 45–60 分鐘）中，「熱身運動」及「主題運動」的建議時間分別約為：','10–15 分鐘；20–30 分鐘',['5 分鐘；30 分鐘','20–30 分鐘；10–15 分鐘','15 分鐘；45 分鐘'],2,
+ '運動小組流程：熱身 10–15 → 主題運動 20–30 → 緩和運動 5 → 伸展及總結 5（分鐘）。'),
+Q(59,'u5','m','關於血含氧量測量機（Oximeter），下列何者正確？','貧血患者的血氧飽和度可能仍是 100%，但輸送的氧氣量較少',['貧血患者的血氧飽和度必然偏低','可在量血壓的同一側手指監測','可反映肺部空氣流通量及心臟狀態'],0,
+ '血氧機只量度血紅蛋白的氧氣飽和度；貧血者可呈 100%；不可在使用止血帶、正量血壓的一邊或打點滴的同側手指監測；亦不能量度肺部空氣流通量或反映心臟狀態。'),
+Q(60,'u5','m','筆記文字中，「自覺竭力程度（RPE）」建議的運動強度一般控制在：','5–7 之間，並按個人體能調節',['1–3 之間','8–10 之間','17–20 之間'],1,
+ '筆記文字：運動強度一般應控制在 5–7 之間，並須按個人體能相應調節。注意筆記附圖是 6–20 級量表（12–13 級＝中強度）；如題目明確指 6–20 級量表，按圖表判斷。'),
+Q(61,'u4','s','治療完成後，助理離開病人前，下列做法正確的是：','確保病人在安全的休息位置並有求助方法，避免令病人獨處',['讓病人獨處休息，節省時間','先清潔儀器，之後才處理病人','只需通知病人自行整理衣服'],2,
+ '善後工作：關機、收拾儀器、幫病人清潔皮膚、詢問不適、整理衣服姿勢；確保病人在安全休息位置，避免令病人獨處，離開前確保有求助方法；通知治療師；清潔儀器；洗手。')
+];
+var BYID={};BANK.forEach(function(q){BYID[q.id]=q;});
+
+(function(){
+'use strict';
+var KEY='pta-mock-v1';
+var LET='ABCD';
+var mem={wrong:{},history:[],theme:'auto',prefs:{mode:'practice',shuffleQ:false,shuffleO:false}};
+function load(){
+  try{
+    var s=window.localStorage.getItem(KEY);
+    if(s){var o=JSON.parse(s);
+      if(o&&typeof o==='object'){
+        mem.wrong=o.wrong||{};
+        mem.history=Array.isArray(o.history)?o.history:[];
+        mem.theme=o.theme||'auto';
+        mem.prefs=Object.assign({},mem.prefs,o.prefs||{});
+      }}
+  }catch(e){}
+}
+function save(){try{window.localStorage.setItem(KEY,JSON.stringify(mem));}catch(e){}}
+function applyTheme(){
+  var r=document.documentElement;
+  if(mem.theme==='auto')r.removeAttribute('data-theme');else r.setAttribute('data-theme',mem.theme);
+}
+
+var S={view:'home',session:null,modal:null,navOpen:false,rfilter:'all',timerId:null};
+var $app=document.getElementById('app'),$top=document.getElementById('topbar'),$modal=document.getElementById('modal');
+
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function fmt(sec){var m=Math.floor(sec/60),s=sec%60;return(m<10?'0':'')+m+':'+(s<10?'0':'')+s;}
+function wrongIds(){return Object.keys(mem.wrong).map(Number).filter(function(id){return BYID[id];}).sort(function(a,b){return a-b;});}
+function cur(){return S.session.items[S.session.idx];}
+
+/* ---------- session ---------- */
+function startSet(cfg){
+  var p=mem.prefs;
+  var mode=cfg.mode||p.mode;
+  var ids=p.shuffleQ?shuffle(cfg.ids):cfg.ids.slice();
+  var items=ids.map(function(id){
+    var order=p.shuffleO?shuffle([0,1,2,3]):[0,1,2,3];
+    return{qid:id,order:order,a:order.indexOf(BYID[id].a),picked:null,flagged:false};
+  });
+  S.session={title:cfg.title,tag:cfg.tag||'',mode:mode,cfg:cfg,items:items,idx:0,start:Date.now(),end:null};
+  S.view='quiz';S.navOpen=false;S.modal=null;
+  startTimer();render();window.scrollTo(0,0);
+}
+function startTimer(){
+  stopTimer();
+  S.timerId=setInterval(function(){
+    var el=document.getElementById('timer');
+    if(el&&S.session&&!S.session.end)el.textContent=fmt(Math.floor((Date.now()-S.session.start)/1000));
+  },1000);
+}
+function stopTimer(){if(S.timerId){clearInterval(S.timerId);S.timerId=null;}}
+
+function pick(i){
+  if(S.view!=='quiz'||S.modal)return;
+  var s=S.session,it=cur();
+  if(i<0||i>3)return;
+  if(s.mode==='practice'){
+    if(it.picked!==null)return;
+    it.picked=i;
+    if(i!==it.a)mem.wrong[it.qid]=1;
+    else if(s.tag==='wrong')delete mem.wrong[it.qid];
+    save();
+  }else{
+    it.picked=(it.picked===i)?null:i;
+  }
+  render();
+}
+function go(n){
+  var s=S.session;
+  if(n<0||n>=s.items.length)return;
+  s.idx=n;render();window.scrollTo(0,0);
+}
+function flag(){var it=cur();it.flagged=!it.flagged;render();}
+function openSubmit(){
+  var s=S.session;
+  var un=s.items.filter(function(x){return x.picked===null;}).length;
+  var fl=s.items.filter(function(x){return x.flagged;}).length;
+  if(s.mode==='practice'&&un===0){finish();return;}
+  var body='共 '+s.items.length+' 題，'+(un?'尚有 '+un+' 題未作答':'全部已作答')+(fl?'，'+fl+' 題已標記':'')+'。'+(s.mode==='exam'?'交卷後會顯示分數及題解。':'未作答的題目不計分。');
+  S.modal={title:s.mode==='exam'?'確定交卷？':'完成並查看結果？',body:body,actions:[{label:'繼續作答',act:'closeModal'},{label:s.mode==='exam'?'確定交卷':'查看結果',act:'finish',pri:1}]};
+  render();
+}
+function finish(){
+  var s=S.session;
+  s.end=Date.now();
+  if(s.mode==='exam'){
+    s.items.forEach(function(it){
+      if(it.picked===null)return;
+      if(it.picked!==it.a)mem.wrong[it.qid]=1;
+      else if(s.tag==='wrong')delete mem.wrong[it.qid];
+    });
+  }
+  var c=0,a=0;
+  s.items.forEach(function(it){if(it.picked!==null){a++;if(it.picked===it.a)c++;}});
+  if(a>0){
+    mem.history.unshift({t:Date.now(),title:s.title,mode:s.mode,c:c,n:s.items.length,a:a,sec:Math.round((s.end-s.start)/1000)});
+    mem.history=mem.history.slice(0,30);
+  }
+  save();stopTimer();
+  S.modal=null;S.view='result';S.rfilter='all';
+  render();window.scrollTo(0,0);
+}
+function tally(s){
+  var c=0,a=0,w=0;
+  s.items.forEach(function(it){if(it.picked!==null){a++;if(it.picked===it.a)c++;else w++;}});
+  return{c:c,a:a,w:w,n:s.items.length,u:s.items.length-a};
+}
+
+/* ---------- views ---------- */
+function renderHeader(){
+  var h='';
+  var themeLabel=mem.theme==='auto'?'自動':(mem.theme==='dark'?'深色':'淺色');
+  var themeBtn='<button class="ibtn" data-act="theme" title="切換外觀" aria-label="切換外觀，目前：'+themeLabel+'">'+themeLabel+'</button>';
+  if(S.view==='quiz'&&S.session){
+    var s=S.session,t=tally(s);
+    var secs=Math.floor(((s.end||Date.now())-s.start)/1000);
+    h+='<div class="tb"><button class="ibtn" data-act="quit">退出</button>'
+      +'<div class="grow"><div class="tb-title">第 '+(s.idx+1)+' / '+s.items.length+' 題</div>'
+      +'<div class="tb-sub">'+(s.mode==='exam'?'考試模式':'練習模式')+'，已作答 '+t.a+' 題'+(s.mode==='practice'&&t.a?'，答對 '+t.c+' 題':'')+'</div></div>'
+      +'<span class="timer" id="timer">'+fmt(secs)+'</span></div>'
+      +'<div class="pbar"><i style="width:'+Math.round(t.a/t.n*100)+'%"></i></div>';
+  }else if(S.view==='home'){
+    h+='<div class="tb"><div class="brand grow"><span class="logo">PTA</span><div><div class="brand-t">物理治療助理刷題</div><div class="brand-s">ERB 基礎證書 持續評估筆試</div></div></div>'+themeBtn+'</div>';
+  }else{
+    h+='<div class="tb"><button class="ibtn" data-act="home">主頁</button><div class="grow"><div class="tb-title">'+(S.view==='result'?'測驗結果':'題解檢視')+'</div><div class="tb-sub">'+esc(S.session?S.session.title:'')+'</div></div>'+themeBtn+'</div>';
+  }
+  $top.innerHTML=h;
+}
+
+function homeHTML(){
+  var p=mem.prefs,wr=wrongIds();
+  var best=0,att=mem.history.length;
+  mem.history.forEach(function(x){var r=Math.round(x.c/x.n*100);if(r>best)best=r;});
+  var h='<section class="hero"><h1>25 題 MC，答對 13 題即及格</h1><p>題庫按課程筆記及自修工作紙編寫，共 '+BANK.length+' 題，每題附題解。</p></section>';
+  h+='<div class="stats"><div class="stat"><b>'+att+'</b><span>已完成測驗</span></div><div class="stat"><b>'+(att?best+'%':'無')+'</b><span>最佳成績</span></div><div class="stat"><b>'+wr.length+'</b><span>錯題本</span></div></div>';
+
+  h+='<div class="card"><div class="seg-row"><span class="lab">模式</span><div class="seg">'
+    +'<button data-act="pref" data-k="mode" data-v="practice" aria-pressed="'+(p.mode==='practice')+'">練習</button>'
+    +'<button data-act="pref" data-k="mode" data-v="exam" aria-pressed="'+(p.mode==='exam')+'">考試</button></div></div>'
+    +'<p class="hint" style="margin:-4px 0 12px">'+(p.mode==='practice'?'練習：每題作答後即時顯示答案及題解。':'考試：交卷後才顯示分數及題解，可跳題、標記及改答。')+'</p>'
+    +'<div class="seg-row"><span class="lab">題序</span><div class="seg">'
+    +'<button data-act="pref" data-k="shuffleQ" data-v="0" aria-pressed="'+(!p.shuffleQ)+'">原序</button>'
+    +'<button data-act="pref" data-k="shuffleQ" data-v="1" aria-pressed="'+(!!p.shuffleQ)+'">隨機</button></div></div>'
+    +'<div class="seg-row" style="margin-bottom:0"><span class="lab">選項</span><div class="seg">'
+    +'<button data-act="pref" data-k="shuffleO" data-v="0" aria-pressed="'+(!p.shuffleO)+'">原序</button>'
+    +'<button data-act="pref" data-k="shuffleO" data-v="1" aria-pressed="'+(!!p.shuffleO)+'">隨機</button></div></div></div>';
+
+  h+='<h2 class="h-sec">開始作答</h2>';
+  h+='<button class="set feature" data-act="start" data-set="paper"><span class="n">25<small>題</small></span><span class="m"><b>原卷模擬</b><span>即對話中的模擬測驗，建議先用考試模式自測。</span></span></button>';
+  h+='<button class="set" data-act="start" data-set="random"><span class="n">25<small>題</small></span><span class="m"><b>隨機 25 題</b><span>由全部 '+BANK.length+' 題隨機抽取，每次不同。</span></span></button>';
+  h+='<button class="set" data-act="start" data-set="extra"><span class="n">36<small>題</small></span><span class="m"><b>加強題</b><span>原卷以外新增的題目，補足較少出現的考點。</span></span></button>';
+  h+='<button class="set" data-act="start" data-set="all"><span class="n">'+BANK.length+'<small>題</small></span><span class="m"><b>全題庫</b><span>全部題目由頭到尾。</span></span></button>';
+  h+='<button class="set" data-act="start" data-set="wrong"'+(wr.length?'':' disabled')+'><span class="n">'+wr.length+'<small>題</small></span><span class="m"><b>錯題本</b><span>'+(wr.length?'答錯過的題目；在此模式答對後會移出錯題本。':'暫時沒有錯題，先做其他題組吧。')+'</span></span></button>';
+
+  h+='<h2 class="h-sec">按單元刷題</h2><div class="chips">';
+  Object.keys(UNITS).forEach(function(u){
+    var n=BANK.filter(function(q){return q.unit===u;}).length;
+    h+='<button class="chip" data-act="start" data-set="'+u+'" aria-pressed="false">'+UNITS[u]+'<em>'+n+'</em></button>';
+  });
+  h+='</div>';
+
+  if(att){
+    h+='<h2 class="h-sec">最近成績</h2><div class="card tight"><table class="hist"><tbody>';
+    mem.history.slice(0,6).forEach(function(x){
+      var d=new Date(x.t);
+      h+='<tr><td>'+esc(x.title)+'<div class="small muted">'+(d.getMonth()+1)+'月'+d.getDate()+'日 '+('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)+'，'+(x.mode==='exam'?'考試':'練習')+'，'+fmt(x.sec||0)+'</div></td><td class="sc">'+x.c+' / '+x.n+'</td></tr>';
+    });
+    h+='</tbody></table></div><div style="text-align:right"><button class="linkbtn" data-act="clear">清除所有紀錄</button></div>';
+  }
+  h+='<p class="foot">題目依據課程筆記編寫，僅供複習；請以課堂及評核員指示為準。</p>';
+  return h;
+}
+
+function quizHTML(){
+  var s=S.session,it=cur(),q=BYID[it.qid],practice=s.mode==='practice',answered=it.picked!==null;
+  var h='<div class="card"><div class="tags"><span class="tag">'+UNITS[q.unit]+'</span><span class="tag alt">'+TYPE[q.type]+'題</span>'+(it.flagged?'<span class="tag warn">已標記</span>':'')+'</div>';
+  h+='<div class="qno"><span class="num">'+(s.idx+1)+'.</span><h2 class="qtext serif">'+esc(q.q)+'</h2></div>';
+  it.order.forEach(function(oi,i){
+    var cls='opt';
+    if(practice&&answered){
+      if(i===it.a)cls+=' correct';else if(i===it.picked)cls+=' wrong';else cls+=' dim';
+    }else if(!practice&&it.picked===i)cls+=' sel';
+    h+='<button class="'+cls+'" data-act="pick" data-i="'+i+'"'+((practice&&answered)?' aria-disabled="true"':'')+'><span class="k">'+LET[i]+'</span><span class="t">'+esc(q.opts[oi])+'</span></button>';
+  });
+  if(practice&&answered){
+    var ok=it.picked===it.a;
+    h+='<div class="exp '+(ok?'ok':'bad')+'" role="status"><b>'+(ok?'答對了':'答錯了，正確答案是 '+LET[it.a])+'</b><p>'+esc(q.exp)+'</p></div>';
+  }
+  h+='</div>';
+  if(S.navOpen){
+    h+='<div class="card tight"><div class="grid">';
+    s.items.forEach(function(x,i){
+      var c='cell';
+      if(i===s.idx)c+=' cur';
+      if(x.picked!==null){c+=practice?(x.picked===x.a?' ok':' bad'):' ans';}
+      if(x.flagged)c+=' flag';
+      h+='<button class="'+c+'" data-act="goto" data-n="'+i+'" aria-label="第 '+(i+1)+' 題">'+(i+1)+'</button>';
+    });
+    h+='</div><div class="legend">'+(practice?'<span>綠：答對</span><span>紅：答錯</span>':'<span>藍：已作答</span>')+'<span>黃點：已標記</span><span>黑框：目前題目</span></div></div>';
+  }
+  var last=s.idx===s.items.length-1;
+  var act='<div class="actions"><div class="in">'
+    +'<button class="btn flex" data-act="prev"'+(s.idx===0?' disabled':'')+'>上一題</button>'
+    +'<button class="btn mark flex" data-act="flag" aria-pressed="'+it.flagged+'">標記</button>'
+    +'<button class="btn flex" data-act="nav" aria-pressed="'+S.navOpen+'">題號</button>'
+    +(last?'<button class="btn pri wide" data-act="submit">'+(practice?'完成':'交卷')+'</button>':'<button class="btn pri wide" data-act="next">下一題</button>')
+    +'</div></div>';
+  return h+act;
+}
+
+function resultHTML(){
+  var s=S.session,t=tally(s);
+  var half=t.n/2,pass=t.c>=half;
+  var sec=Math.round((s.end-s.start)/1000);
+  var h='<div class="card"><div class="score"><div class="big">'+t.c+' <small>/ '+t.n+'</small></div>'
+    +'<span class="verdict '+(pass?'pass':'fail')+'">'+(pass?'及格':'未及格')+'</span>'
+    +'<p class="muted small" style="margin-top:10px">及格線 '+half+' 分（答對 '+Math.ceil(half)+' 題或以上），答錯 '+t.w+' 題'+(t.u?'，未作答 '+t.u+' 題':'')+'，用時 '+fmt(sec)+'</p></div></div>';
+  var per={};
+  s.items.forEach(function(it){var u=BYID[it.qid].unit;per[u]=per[u]||{c:0,n:0};per[u].n++;if(it.picked===it.a)per[u].c++;});
+  h+='<h2 class="h-sec">各單元表現</h2><div class="card"><div class="bars">';
+  Object.keys(UNITS).forEach(function(u){
+    if(!per[u])return;
+    var r=Math.round(per[u].c/per[u].n*100);
+    h+='<div><div class="bar-h"><span>'+UNITS[u]+'</span><span>'+per[u].c+' / '+per[u].n+'（'+r+'%）</span></div><div class="bar-t"><i class="'+(r<50?'low':(r>=80?'hi':''))+'" style="width:'+r+'%"></i></div></div>';
+  });
+  h+='</div></div>';
+  var weak=Object.keys(per).filter(function(u){return per[u].n>=2&&per[u].c/per[u].n<0.6;});
+  if(weak.length)h+='<p class="muted small" style="margin:-4px 2px 14px">建議優先重溫：'+weak.map(function(u){return UNITS[u];}).join('、')+'。</p>';
+  var wrongCount=t.w+t.u;
+  h+='<button class="btn pri block" data-act="rv" data-f="all">逐題檢視題解</button>';
+  if(t.w)h+='<button class="btn block" data-act="rv" data-f="wrong">只看答錯的題（'+t.w+'）</button>';
+  if(wrongCount)h+='<button class="btn block" data-act="retry">重做答錯及未答的題（'+wrongCount+'）</button>';
+  h+='<button class="btn block" data-act="again">再做一次</button><button class="btn block" data-act="home">返回主頁</button>';
+  return h;
+}
+
+function reviewHTML(){
+  var s=S.session,f=S.rfilter;
+  var fl=[['all','全部'],['wrong','答錯'],['na','未作答'],['flag','已標記']];
+  var h='<div class="chips" style="margin-bottom:14px">';
+  fl.forEach(function(x){h+='<button class="chip" data-act="rv" data-f="'+x[0]+'" aria-pressed="'+(f===x[0])+'">'+x[1]+'</button>';});
+  h+='</div>';
+  var shown=0;
+  s.items.forEach(function(it,i){
+    var q=BYID[it.qid];
+    var st=it.picked===null?'na':(it.picked===it.a?'ok':'bad');
+    if(f==='wrong'&&st!=='bad')return;
+    if(f==='na'&&st!=='na')return;
+    if(f==='flag'&&!it.flagged)return;
+    shown++;
+    h+='<div class="card"><div class="rv-head"><span class="st '+st+'">第 '+(i+1)+' 題　'+(st==='ok'?'答對':(st==='bad'?'答錯':'未作答'))+'</span><span class="tags" style="margin:0"><span class="tag">'+UNITS[q.unit]+'</span>'+(it.flagged?'<span class="tag warn">已標記</span>':'')+'</span></div>';
+    h+='<h3 class="qtext serif" style="font-size:1.05rem">'+esc(q.q)+'</h3>';
+    it.order.forEach(function(oi,k){
+      var cls='opt dim';
+      if(k===it.a)cls='opt correct';
+      else if(k===it.picked)cls='opt wrong';
+      var note=(k===it.a?'　（正確答案）':'')+(k===it.picked?(k===it.a?'':'　（你的答案）'):'');
+      h+='<div class="'+cls+'" style="cursor:default"><span class="k">'+LET[k]+'</span><span class="t">'+esc(q.opts[oi])+note+'</span></div>';
+    });
+    h+='<div class="exp"><b>題解</b><p>'+esc(q.exp)+'</p></div></div>';
+  });
+  if(!shown)h+='<div class="empty">這個篩選下沒有題目。</div>';
+  h+='<button class="btn block" data-act="result">返回結果</button>';
+  return h;
+}
+
+function modalHTML(){
+  if(!S.modal)return '';
+  var m=S.modal;
+  var h='<div class="ov" role="dialog" aria-modal="true"><div class="box"><h3>'+esc(m.title)+'</h3><p class="muted">'+esc(m.body)+'</p><div class="row">';
+  m.actions.forEach(function(a){h+='<button class="btn flex'+(a.pri?' pri':'')+'" data-act="'+a.act+'">'+esc(a.label)+'</button>';});
+  return h+'</div></div></div>';
+}
+
+function render(){
+  renderHeader();
+  var html;
+  if(S.view==='home')html=homeHTML();
+  else if(S.view==='quiz')html=quizHTML();
+  else if(S.view==='result')html=resultHTML();
+  else html=reviewHTML();
+  $app.className='wrap'+(S.view==='quiz'?' inquiz':'');
+  $app.innerHTML=html;
+  $modal.innerHTML=modalHTML();
+}
+
+/* ---------- events ---------- */
+function startFromSet(name){
+  var ids,title;
+  if(name==='paper'){ids=BANK.filter(function(q){return q.id<=25;}).map(function(q){return q.id;});title='原卷模擬';}
+  else if(name==='extra'){ids=BANK.filter(function(q){return q.id>25;}).map(function(q){return q.id;});title='加強題';}
+  else if(name==='all'){ids=BANK.map(function(q){return q.id;});title='全題庫';}
+  else if(name==='random'){ids=shuffle(BANK.map(function(q){return q.id;})).slice(0,25);title='隨機 25 題';}
+  else if(name==='wrong'){ids=wrongIds();title='錯題本';}
+  else{ids=BANK.filter(function(q){return q.unit===name;}).map(function(q){return q.id;});title=UNITS[name];}
+  if(!ids.length)return;
+  startSet({title:title,ids:ids,tag:name==='wrong'?'wrong':''});
+}
+function act(a,d){
+  switch(a){
+    case 'theme':mem.theme=mem.theme==='auto'?'dark':(mem.theme==='dark'?'light':'auto');applyTheme();save();render();break;
+    case 'pref':
+      if(d.k==='mode')mem.prefs.mode=d.v;else mem.prefs[d.k]=d.v==='1';
+      save();render();break;
+    case 'start':startFromSet(d.set);break;
+    case 'pick':pick(+d.i);break;
+    case 'prev':go(S.session.idx-1);break;
+    case 'next':go(S.session.idx+1);break;
+    case 'goto':go(+d.n);break;
+    case 'flag':flag();break;
+    case 'nav':S.navOpen=!S.navOpen;render();break;
+    case 'submit':openSubmit();break;
+    case 'finish':finish();break;
+    case 'closeModal':S.modal=null;render();break;
+    case 'quit':
+      S.modal={title:'退出作答？',body:'目前這份測驗的進度不會保留。已答錯的題目已記入錯題本。',actions:[{label:'繼續作答',act:'closeModal'},{label:'退出',act:'quitYes',pri:1}]};render();break;
+    case 'quitYes':stopTimer();S.modal=null;S.view='home';S.session=null;render();window.scrollTo(0,0);break;
+    case 'home':stopTimer();S.view='home';S.session=null;render();window.scrollTo(0,0);break;
+    case 'rv':S.view='review';S.rfilter=d.f||'all';render();window.scrollTo(0,0);break;
+    case 'result':S.view='result';render();window.scrollTo(0,0);break;
+    case 'again':startSet(Object.assign({},S.session.cfg,{mode:S.session.mode}));break;
+    case 'retry':
+      var ids=S.session.items.filter(function(it){return it.picked!==it.a;}).map(function(it){return it.qid;});
+      if(ids.length)startSet({title:'重做：'+S.session.title,ids:ids,tag:S.session.tag,mode:S.session.mode});
+      break;
+    case 'clear':
+      S.modal={title:'清除所有紀錄？',body:'成績紀錄及錯題本會被清除，不能復原。',actions:[{label:'取消',act:'closeModal'},{label:'清除',act:'clearYes',pri:1}]};render();break;
+    case 'clearYes':mem.history=[];mem.wrong={};save();S.modal=null;render();break;
+  }
+}
+document.addEventListener('click',function(e){
+  var t=e.target.closest?e.target.closest('[data-act]'):null;
+  if(!t||t.disabled)return;
+  act(t.dataset.act,t.dataset);
+});
+document.addEventListener('keydown',function(e){
+  if(S.modal){if(e.key==='Escape'){S.modal=null;render();}return;}
+  if(S.view!=='quiz'||e.ctrlKey||e.metaKey||e.altKey)return;
+  var k=(e.key||'').toLowerCase();
+  if(k.length===1&&'abcd'.indexOf(k)>-1)pick('abcd'.indexOf(k));
+  else if(k.length===1&&'1234'.indexOf(k)>-1)pick(+k-1);
+  else if(k==='arrowright')go(S.session.idx+1);
+  else if(k==='arrowleft')go(S.session.idx-1);
+  else if(k==='f')flag();
+});
+
+load();applyTheme();render();
+})();
+</script>
+</body>
+</html>
